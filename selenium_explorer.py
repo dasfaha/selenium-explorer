@@ -1,3 +1,8 @@
+#This program is made available under the GNU license
+#Author:David Asfaha
+#E-mail:davidasfaha@gmail.com
+
+
 from bottle import route, run, template, view, debug
 from selenium import webdriver
 
