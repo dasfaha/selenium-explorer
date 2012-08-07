@@ -4,6 +4,9 @@
 
 
 from bottle import route, run, template, view, debug
+#line below is for debugging
+import code
+import pdb
 from selenium import webdriver
 
 STARTING_XPATH = '//*'
@@ -38,16 +41,20 @@ def follow_element(level, elem_pos):
     req_response = {}
     level_index = int(level)
     elem_pos_index = elem_pos
-    #If a level is requested that has not been reached yet produce an error message
-    if level_index + 1 <> len(elem_list):
+    next_level = level+1
+    #Check that level is not out of bounds of elem_list
+    if level_index + 1 > len(elem_list):
         req_response['error'] = "Level requested not availabled in html content representation"
-    #If there is an actual error that corresponds to the level requested, roll on
     if elem_list[level_index]:
         sub_elem = elem_list[level_index][elem_pos_index].find_elements_by_xpath('*')
         #req_response['sub_elem_count'] = len(sub_elem)
-        elem_list.append(sub_elem)
+        #If current level is last in elem_list then append new elements in a new level
+        if len(elem_list) == next_level:
+            elem_list.append(sub_elem)
+        #if next level already contains elements replace them with the ones obtained here
+        else:
+            elem_list[next_level] = sub_elem
 #        req_response['element_list'] = elem_list[-1:]
-        next_level = level+1
         req_response = dict(element_list=[x.tag_name for x in elem_list[next_level][:-1]], level=next_level)   
     return req_response
 
@@ -58,8 +65,13 @@ def home():
     assert elem_list
     start_vars = dict(url=start_url,element_list=elem_list, level=0)
     return start_vars
-    
-init()
+
+@route("/get_console")
+def get_console():    
+    pdb.set_trace()
+
+
+init()      
 debug(True)
 run(host='localhost', port=8080)
 
