@@ -5,7 +5,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	    function clearCellBackground(elem_level){
-            $('[id^=elem_level]').each(function(){
+            $('[id^='+ elem_level + ']').each(function(){
                 $(this).css("background-color", "")
             })
         }                  
@@ -16,7 +16,7 @@
 	    $(document).ready(function() {	        
             $('.level_elem').on("click",function(event){
                 elem_level_pos =  $(this).attr("id").split("-");
-                assertTrue(elem_level_pos.length==2)
+                //assertTrue(elem_level_pos.length==2)
                 elem_level = elem_level_pos[0]
                 elem_pos = elem_level_pos[1]
                 clearCellBackground(elem_level);
